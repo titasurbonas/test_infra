@@ -1,0 +1,14 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllObjectActions",
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": [
+                "${s3_arn}",
+                "${s3_arn}/*"
+            ]
+        }
+    ]
+}
