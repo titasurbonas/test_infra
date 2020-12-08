@@ -7,10 +7,10 @@ data "template_file" "ec2_profile_policy" {
   }
 }
 
-data "template_file" "user_data" {
-template = file("${path.module}/user_data.sh")
+data "template_file" "user_data_private" {
+  template = file("${path.module}/user_data_private.sh")
     vars = {
         S3_bucket = aws_s3_bucket.s3_bucket.id
-        file_path = "download_file.py"
+        file_name = "download_file.py"
     }
 }

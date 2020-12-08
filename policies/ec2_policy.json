@@ -2,13 +2,24 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "AllObjectActions",
+            "Sid": "AllS3Actions",
             "Effect": "Allow",
             "Action": "s3:*",
             "Resource": [
                 "${s3_arn}",
                 "${s3_arn}/*"
             ]
+        },
+        {
+            "Sid": "AllowCreateLogs",
+            "Effect": "Allow",
+            "Action": [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+            "logs:DescribeLogStreams"
+        ],
+            "Resource":  "*"
         }
     ]
 }

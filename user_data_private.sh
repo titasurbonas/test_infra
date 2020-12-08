@@ -6,11 +6,17 @@ sudo yum-config-manager --save --setopt=docker-ce-stable.skip_if_unavailable=tru
 sudo amazon-linux-extras install docker
 sudo amazon-linux-extras install python3
 
+# Log to cloud watch 
+sudo yum install -y awslogs
+sudo chkconfig awslogs on
+sudo systemctl enable awslogsd.service
+
 # create pyton venv
 python3 -m venv /home/ec2-user/python-venv
 source /home/ec2-user/python-venv/bin/activate
 pip install pip --upgrade
-pip install boto3
+pip install boto
+pip install botocore
 deactivate
 
 # start docker
@@ -29,9 +35,18 @@ echo "<!doctype html>
 </head>
 <body>
   <h2>Hello from Nginx container</h2>
+  <p>From user data</p>
 </body>
 </html>" >> /home/ec2-user/site-content/index.html
 mkdir /home/ec2-user/scripts
-aws s3 cp s3://${S3_bucket}/${file_path} /home/ec2-user/scripts
+aws s3 cp s3://${S3_bucket}/${file_name} /home/ec2-user/scripts
+
+# create pyton venv
+python3 -m venv /home/ec2-user/python-venv
+source /home/ec2-user/python-venv/bin/activate
+sudo chmod u+x /home/ec2-user/scripts/${file_name}
+python3 /home/ec2-user/scripts/${file_name} ${S3_bucket}
+deactivate
+
 docker run -it --rm -d -p 80:80 --name web -v /home/ec2-user/site-content:/usr/share/nginx/html nginx
  
